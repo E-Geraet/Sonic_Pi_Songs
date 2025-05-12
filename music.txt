@@ -1,0 +1,67 @@
+LEft: AGFE
+
+Right: AG E E# DC A
+
+
+# --- Einfacher Song in Sonic Pi ---
+
+# Setzt das Tempo (Beats pro Minute)
+use_bpm 90
+
+# --- Drum Beat ---
+# Ein Live-Loop läuft unendlich parallel zu anderen Loops
+live_loop :drums do
+  # Spielt einen Kick-Drum-Sound mit etwas mehr Lautstärke
+  sample :bd_haus, amp: 1.5
+  # Wartet 1 Beat
+  sleep 1
+  # Spielt einen Hi-Hat-Sound
+  sample :elec_cymbal, amp: 0.4, release: 0.1 # Kurzer, leiser Hi-Hat
+  # Wartet 0.5 Beats
+  sleep 0.5
+  # Spielt einen Snare-Drum-Sound
+  sample :sn_dolf, amp: 1
+  # Wartet 0.5 Beats
+  sleep 0.5
+  # Spielt einen Hi-Hat-Sound
+  sample :elec_cymbal, amp: 0.4, release: 0.1
+  # Wartet 1 Beat
+  sleep 1
+  # Spielt einen Hi-Hat-Sound
+  sample :elec_cymbal, amp: 0.4, release: 0.1
+  # Wartet 1 Beat
+  sleep 1
+end
+
+# --- Basslinie ---
+live_loop :bass do
+  # Wählt einen Synthesizer-Sound für den Bass
+  use_synth :fm # FM-Synthese eignet sich oft gut für Bässe
+  # Spielt eine tiefe Note (C in der 2. Oktave)
+  # 'release' bestimmt, wie lange die Note ausklingt
+  # 'cutoff' filtert hohe Frequenzen für einen dumpferen Bass-Sound
+  play :c2, release: 4, cutoff: 70, amp: 1.2
+  # Wartet 4 Beats (die Länge einer Note in diesem Loop)
+  sleep 4
+  # Spielt die nächste Note (G in der 2. Oktave)
+  play :g2, release: 4, cutoff: 75, amp: 1.2
+  # Wartet 4 Beats
+  sleep 4
+end
+
+# --- Melodie ---
+live_loop :melody do
+  # Synchronisiert diesen Loop mit dem :drums Loop, falls nötig (optional)
+  # sync :drums
+
+  # Wählt einen Synthesizer-Sound für die Melodie
+  use_synth :prophet # Ein klassischer Synth-Sound
+
+  # Wählt zufällig eine Note aus der C-Dur-Pentatonik-Skala (5 Noten)
+  # in der 4. Oktave. '.choose' wählt ein zufälliges Element aus der Liste.
+  # 'rrand(min, max)' erzeugt eine Zufallszahl zwischen min und max für den Cutoff.
+  play scale(:c4, :major_pentatonic).choose, release: 0.3, cutoff: rrand(70, 110), amp: 0.8
+
+  # Wartet eine zufällige Dauer (0.25 oder 0.5 Beats), um Rhythmus zu erzeugen
+  sleep [0.25, 0.5, 0.5].choose # Wahrscheinlicher 0.5 als 0.25
+end
