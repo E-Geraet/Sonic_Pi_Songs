@@ -1,0 +1,58 @@
+#
+
+melody_chain = {}
+last_notes = [70, 72]  # MIDI: C4, E4 = C-Moll
+
+live_loop :evolving_melody1 do
+  use_synth :tb303
+  next_note = melody_chain[last_notes] || scale(:c3, :minor_pentatonic).choose
+  play next_note, release: rrand(0.125,1.5), amp: 0.5
+  melody_chain[last_notes] = scale(:c3, :minor_pentatonic).choose
+  last_notes = [last_notes[1], next_note]
+  sleep rrand(1.025,1.25)
+end
+
+live_loop :evolving_melody2 do
+  use_synth :tb303
+  next_note = melody_chain[last_notes] || scale(:c4, :minor_pentatonic).choose
+  play next_note, release: rrand(0.125,1.5), amp: 0.5
+  melody_chain[last_notes] = scale(:c4, :minor_pentatonic).choose
+  last_notes = [last_notes[1], next_note]
+  sleep rrand(1.25,1.5)
+end
+
+live_loop :evolving_melody3 do
+  use_synth :tb303
+  next_note = melody_chain[last_notes] || scale(:c5, :minor_pentatonic).choose
+  play next_note, release: rrand(0.125,1.5), amp: 0.5
+  melody_chain[last_notes] = scale(:c5, :minor_pentatonic).choose
+  last_notes = [last_notes[1], next_note]
+  sleep rrand(1.5,2)
+end
+
+
+live_loop :drum do
+  with_fx :compressor do
+    with_fx :distortion do
+      sample :bd_tek, amp: 1, release: 0.5
+      sleep 0.5
+    end
+  end
+  
+end
+
+live_loop :drum2 do
+  
+  
+  sample :bd_808, amp: 2, release: 0.5
+  sleep 1
+end
+
+
+live_loop :drum3 do
+  
+  with_fx :slicer do
+    sample :sn_dolf, amp: 2, release: 0.5
+    sleep 1
+  end
+end
