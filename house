@@ -1,0 +1,309 @@
+use_bpm 60
+
+live_loop :met do
+  sleep 0.5
+end
+
+# Drum ########################
+
+live_loop :kick, sync: :met do
+  
+  stop
+  
+  28.times do
+    sample kick, amp: 2
+    sleep 0.5
+  end
+  
+  sleep 2
+end
+
+live_loop :kick2, sync: :met do
+  
+  stop
+  
+  28.times do
+    sample kick2, amp: 2
+    sleep 8
+  end
+  
+  sleep 16
+end
+
+live_loop :kick3, sync: :met do
+  
+  stop
+  
+  28.times do
+    sample :bd_tek, amp: 2
+    sleep 0.5
+  end
+  
+  sleep 2
+end
+
+# Hat ########################
+
+live_loop :hats_sample_2, sync: :met do
+  stop
+  use_sample_defaults amp: 0.6
+  
+  28.times do
+    sleep 0.25
+    sample hihat2
+    sleep 0.25
+  end
+  sleep 2
+end
+
+live_loop :splash_hard, sync: :met do
+  stop
+  sample hihat1
+  sleep 8
+  
+end
+
+# Clap ########################
+
+live_loop :clap, sync: :met do
+  with_fx :compressor do
+    stop
+    use_sample_defaults amp: 1.1
+    sleep 0.5
+    with_fx :reverb, mix: 0.1 do
+      sample clap, 5
+    end
+  end
+  sleep 0.5
+end
+
+
+#Synth
+
+live_loop :tech_loop, sync: :met do
+  stop
+  with_fx :slicer do
+    with_fx :gverb do
+      
+      with_fx :compressor do
+        use_synth :tech_saws
+        use_synth_defaults release: 0.08, cutoff: 100, amp: 0.5, sustain: rrand(0.1,0.2)
+        
+        bs = :b3
+        es = :e3
+        as = :as3
+        ds_high = :ds4
+        
+        notes = [
+          # bs
+          0, bs, 0,  bs+12,
+          0, 0,  0,  bs,
+          0, 0,  bs, 0,
+          0, 0,  bs, 0,
+          
+          # es
+          0, es, 0,  es+12,
+          0, 0,  0,  es,
+          0, 0,  es, 0,
+          0, 0,  es, 0,
+          
+          # as
+          0, as, 0,  as+12,
+          0, 0,  0,  as,
+          0, 0,  as, 0,
+          0, 0,  as, 0,
+          
+          # ds_high
+          0, ds_high, 0,  ds_high+12,
+          0, 0,  0,  ds_high,
+          0, 0,  ds_high, 0,
+          0, 0,  ds_high, 0
+        ]
+        with_fx :reverb, mix: 0.3 do
+          with_fx  :lpf, cutoff: 80, mix: 1 do
+            p = notes.tick
+            
+            notes.each do |note|
+              play note if note != 0
+              sleep 0.125
+              
+            end
+          end
+        end
+      end
+    end
+  end
+end
+
+
+live_loop :synth_y do
+  stop
+  use_synth_defaults release: 0.3, sustain: 8, amp: 1, attack: 0.12, cutoff: 90
+  
+  key = :a3
+  
+  with_fx :bpf, centre: 80, mix: 0.9 do
+    with_fx :wobble, invert_wave: [1,0].tick, phase: 16, wave: 0, mix: 0.2 do
+      
+      with_fx :slicer, phase: 0.125, mix: 0.5 do
+        synth :dsaw, note: chord(key, :m7, invert: -1)
+        ##| synth :subpulse, note: chord(key, :m7, invert: 2)
+        sleep 8
+        
+        synth :dsaw, note: chord(key-2, :m7, invert: -1)
+        ##| synth :subpulse, note: chord(key-2, :m7, invert: 2)
+        sleep 8
+        
+        synth :dsaw, note: chord(key+2, :M7, invert: -1)
+        ##| synth :subpulse, note: chord(key+2, :M7, invert: 2)
+        sleep 8
+        
+        synth :dsaw, note: chord(key+3, :M7, invert: -1)
+        ##| synth :subpulse, note: chord(key+3, :M7, invert: 2)
+        sleep 8
+      end
+    end
+  end
+end
+
+live_loop :synth_x, sync: :met do
+  stop
+  default_release = 4
+  default_cutoff = 80
+  
+  use_synth :prophet
+  use_synth_defaults sustain: 2, release: 2,
+    cutoff: default_cutoff, amp: 0.9, attack: 0.2
+  
+  fx_mix = 0.2
+  
+  with_fx :wobble, phase: 4, mix: fx_mix, wave: 0 do
+    with_fx :flanger, mix: 0.3, phase: 0.25 do
+      with_fx :hpf, cutoff: 70 do
+        play chord(:bb3, :M7), amp: 1
+        sleep 2
+        
+        play chord(:a3, :m7), amp: 1
+        sleep 2
+        
+        play chord(:d4, :m7), amp: 1
+        sleep 2
+        
+        play chord(:g3, :m7), amp: 1
+        sleep 2
+      end
+    end
+  end
+end
+
+
+live_loop :synth_1, sync: :met do
+  stop
+  with_fx :slicer do
+    use_synth :piano
+    use_synth_defaults release: 2.5, amp: 0.2, attack: 0.9
+    
+    gs1 = :gs2
+    gs2 = gs1 + 12
+    as  = :as3
+    fs1 = :fs3
+    fs2 = fs1 + 12
+    b   = :b2
+    cs1 = :cs3
+    cs2 = cs1 + 12
+    ds1 = :ds3
+    ds2 = ds1 + 12
+    f   = :f3
+    
+    pattern1 = [gs1, gs2, as, fs2]
+    pattern2 = [b, gs2, as, fs2]
+    pattern3 = [cs1, f, fs1, cs2]
+    pattern4 = [ds1, f, fs1, cs2]
+    
+    fx_phase = 0.375
+    fx_mix = 0.4
+    
+    with_fx :reverb, room: 0.9, mix: 0.6 do
+      with_fx :echo, phase: fx_phase, decay: 4, mix: fx_mix do
+        with_fx :flanger, depth: -5 do
+          
+          play_pattern_timed pattern1, 0.25, amp: rrand(0.2, 0.3)
+          sleep 1.75
+          
+          in_thread do
+            play_pattern_timed pattern2, 0.25, amp: rrand(0.2, 0.3)
+          end
+          sleep 3.25
+          
+          
+          play_pattern_timed pattern3, 0.25, amp: rrand(0.2, 0.3)
+          sleep 1.75
+          
+          in_thread do
+            play_pattern_timed pattern4, 0.25, amp: rrand(0.2, 0.3)
+          end
+          sleep 3.25
+          
+          
+        end
+      end
+    end
+  end
+end
+
+
+# Bass
+
+live_loop :bass_loop, sync: :met do
+  stop
+  with_fx :slicer do
+    with_fx :hpf, cutoff: 30 do
+      
+      with_fx :compressor do
+        use_synth :piano
+        use_synth_defaults release: 0.08, cutoff: 100, amp: 2.5, sustain: rrand(0.1,0.2)
+        
+        ds = :ds2
+        fs = :fs2
+        cs = :cs2
+        gs = :gs3
+        
+        notes = [
+          0, ds, 0,  ds,
+          0, 0,  0,  ds,
+          0, 0,  ds, 0,
+          0, 0,  ds, 0,
+          
+          0, fs, 0,  fs+12,
+          0, 0,  0,  fs,
+          0, 0,  fs, 0,
+          0, 0,  fs, 0,
+          
+          0, cs, 0,  cs+12,
+          0, 0,  0,  cs,
+          0, 0,  cs, 0,
+          0, 0,  cs, 0,
+          
+          0, ds, 0,  ds+12,
+          0, 0,  0,  ds,
+          0, 0,  ds, fs+12,
+          0, 0,  ds, gs,
+        ]
+        
+        
+        
+        with_fx :reverb, mix: 0.3 do
+          with_fx  :lpf, cutoff: 80, mix: 1 do
+            p = notes.tick
+            
+            notes.each do |note|
+              play note if note != 0
+              sleep 0.125
+            end
+          end
+        end
+      end
+    end
+  end
+  
+end
