@@ -1,8 +1,4 @@
 #Samples
-k1 = ""
-k2 = ""
-k3 = ""
-c1 = ""
 ###################
 melody_chain = {}
 last_notes = [70, 72]
@@ -33,6 +29,7 @@ set_mixer_control! amp: 1, amp_slide: 1
 
 with_fx :reverb, room: 0.8 do
   live_loop :ground, sync: :metro do
+    #stop
     with_fx :compressor, amp: 0.5 do
       
       16.times do
@@ -88,7 +85,7 @@ end
 
 with_fx :reverb, room: 1 do
   live_loop :chords, sync: :metro do
-    ##| stop
+    #stop
     use_bpm get[:bpm]
     
     cp = get[:cp]
@@ -111,7 +108,7 @@ end
 
 with_fx :reverb, room: 0 do
   live_loop :drum, sync: :metro do
-    ##| stop
+    #stop
     use_bpm get[:bpm]
     
     with_fx :lpf, cutoff: 70 do
@@ -172,12 +169,12 @@ end
 sleep 8
 
 live_loop :evolving_melody2, sync: :metro do
-  
+  stop
   melody_chain ||= {}
   last_notes ||= [70, 72]
   
   with_fx :slicer do
-    use_synth :tb303
+    use_synth :fm
     
     current_scale = scale(get[:cp], get[:sc], num_octaves: 2)
     next_note = melody_chain[last_notes] || current_scale.choose
