@@ -1,0 +1,553 @@
+set_mixer_control! lpf: 50, lpf_slide: 16
+
+set :amp_housechords, 0
+set :amp_housechords1, 0
+set :amp_bass, 0
+set :amp_hihat, 0
+set :amp_kick, 0
+set :amp_kick2, 0
+set :amp_snare, 0
+
+
+
+kick = "/home/student/Documents/Samples/x.shulz lofi kit/kicks/kick2.wav"
+snare = "/home/student/Documents/Samples/x.shulz lofi kit/snares/snare3.wav"
+hh = "/home/student/Documents/Samples/x.shulz lofi kit/hats/hat 2.wav"
+perc = "/home/student/Documents/Samples/x.shulz lofi kit/percs/perc1.wav"
+
+voc = "/home/student/Downloads/untitled [vocals].mp3"
+
+
+use_bpm 84
+
+ebm7 = chord(:eb3, :m7)
+bbm7 = chord(:bb2, :m7)
+aabm7 = chord(:ab2, :m7)
+abm9 = chord(:ab2, :m9)
+abm7 = chord(:ab2, :m7)
+db7b9 = [:db3, :f3, :ab3, :b3]
+
+
+
+live_loop :met1 do
+  sleep 1
+end
+
+define :pattern do |pattern|
+  return pattern.ring.tick == "x"
+end
+
+kickon  = 1
+hihaton = 1
+rimon   = 1
+
+chordon = 1
+basson  = 1
+bellon  = 1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+with_fx :level, amp: get(:amp_housechords1) do
+  with_fx :slicer, phase: 1, wave: 0, invert_wave: 1, mix: 0.9 do
+    with_fx :echo, amp: 1.125 do
+      
+      live_loop :housechords1, sync: :met1 do
+        
+        use_synth :fm
+        with_fx :pitch_shift, pitch: -3.9, reps: 2 do
+          play chord(:a3, "m11"), pan: 1, decay: 4, sustain_level: 0, sustain: 0, release: 0.01, divisor: 1, mod_range: 0.2, mod_wave: 2 if chordon == 1
+          play chord(:a3, "m11"), pan: -1, decay: 4, sustain_level: 0, sustain: 0, release: 0.01, divisor: 1, mod_range: 0.3, mod_wave: 3 if chordon == 1
+          sleep rrand(3.9,4.1)
+        end
+        with_fx :pitch_shift, pitch: 7.1, reps: 4 do
+          play chord(:f3, "m11"), pan: 1, decay: 2, sustain_level: 0, sustain: 0, release: 0.01, divisor: 1, mod_range: 0.3, mod_wave: 2 if chordon == 1
+          play chord(:f3, "m11"), pan: -1, decay: 2, sustain_level: 0, sustain: 0, release: 0.01, divisor: 1, mod_range: 0.2, mod_wave: 3 if chordon == 1
+          sleep 4
+        end
+        with_fx :pitch_shift, pitch: -1.9, reps: 2 do
+          play chord(:f3, "m11"), pan: 1, decay: 4, sustain_level: 0, sustain: 0, release: 0.01, divisor: 1, mod_range: 0.2, mod_wave: 3 if chordon == 1
+          play chord(:f3, "m11"), pan: -1, decay: 4, sustain_level: 0, sustain: 0, release: 0.01, divisor: 1, mod_range: 0.3, mod_wave: 2 if chordon == 1
+          sleep rrand(3.9,4.1)
+        end
+        with_fx :pitch_shift, pitch: 5.1, reps: 4 do
+          play chord(:f3, "m11"), pan: 1, decay: 2, sustain_level: 0, sustain: 0, release: 0.01, divisor: 1, mod_range: 0.3, mod_wave: 3 if chordon == 1
+          play chord(:f3, "m11"), pan: -1, decay: 2, sustain_level: 0, sustain: 0, release: 0.01, divisor: 1, mod_range: 0.2, mod_wave: 2 if chordon == 1
+          sleep 4
+        end
+      end
+    end
+  end
+end
+
+with_fx :level, amp: get(:amp_housechords) do
+  with_fx :ping_pong, phase: 1.75 do
+    #with_fx :slicer, phase: 1, wave: 0, invert_wave: 1, mix: 0.9 do
+    with_fx :echo, amp: 1.125 do
+      live_loop :housechords, sync: :met1 do
+        
+        use_synth :mod_fm
+        2.times do
+          play (chord_invert(chord :f3, "m11"), 2), pan: 1, decay: 4, sustain_level: 0, sustain: 0, release: 0.01, divisor: 1, mod_range: 0.2, mod_wave: 3 if chordon == 1
+          play chord(:f3, "m11"), pan: -1, decay: 4, sustain_level: 0, sustain: 0, release: 0.01, divisor: 1, mod_range: 0.3, mod_wave: 3 if chordon == 1
+          sleep 4
+        end
+        2.times do
+          play (chord_invert(chord :c3, "m11"), 4), pan: 1, decay: 4, sustain_level: 0, sustain: 0, release: 0.01, divisor: 1, mod_range: 0.3, mod_wave: 3 if chordon == 1
+          play (chord_invert(chord :c3, "m11"), 3), pan: -1, decay: 4, sustain_level: 0, sustain: 0, release: 0.01, divisor: 1, mod_range: 0.2, mod_wave: 3 if chordon == 1
+          sleep rrand(3.9,4.1)
+        end
+        2.times do
+          play chord(:Eb3, "m11"), pan: 1, decay: 4, sustain_level: 0, sustain: 0, release: 0.01, divisor: 1, mod_range: 0.2, mod_wave: 3 if chordon == 1
+          play chord(:Eb3, "m11"), pan: -1, decay: 4, sustain_level: 0, sustain: 0, release: 0.01, divisor: 1, mod_range: 0.3, mod_wave: 3 if chordon == 1
+          sleep 4
+        end
+        2.times do
+          play (chord_invert(chord :Bb2, "m11"), 2), pan: 1, decay: 4, sustain_level: 0, sustain: 0, release: 0.01, divisor: 1, mod_range: 0.3, mod_wave: 3 if chordon == 1
+          play (chord_invert(chord :Bb2, "m11"), 5), pan: -1, decay: 4, sustain_level: 0, sustain: 0, release: 0.01, divisor: 1, mod_range: 0.2, mod_wave: 3 if chordon == 1
+          sleep rrand(3.9,4.1)
+        end
+      end
+    end
+  end
+  #end
+end
+
+with_fx :level, amp: get(:amp_bass) do
+  with_fx :flanger do
+    with_fx :lpf, cutoff: 60 do
+      with_fx :pitch_shift, pitch: -9 do
+        live_loop :Bassline, sync: :met1 do
+          
+          define :basn do |n, r|
+            play n, release: r, cutoff: rrand(55, 125) if basson == 1
+            sleep r
+          end
+          
+          use_synth :fm
+          
+          basn 29, 0.75
+          basn 34, 0.75
+          basn 36, 1
+          basn 39, 1
+          basn 41, 0.5
+          
+          basn 29, 0.75
+          basn 34, 0.75
+          basn 36, 1
+          basn 41, 0.5
+          basn 39, 0.5
+          basn 34, 0.5
+          
+          basn 29+7, 0.75
+          basn 34-5, 0.75
+          basn 36-5, 1
+          basn 39-5, 1
+          basn 39, 0.5
+          
+          basn 29+7, 0.75
+          basn 34+7, 0.75
+          basn 36+7, 1
+          basn 41-5, 0.5
+          basn 39-5, 0.5
+          basn 34-5, 0.5
+          
+          basn 29-2, 0.75
+          basn 34-2, 0.75
+          basn 36-2, 1
+          basn 39-2, 1
+          basn 41-2, 0.5
+          
+          basn 29+5, 0.75
+          basn 34-7, 0.75
+          basn 36-7, 1
+          basn 39-7, 0.5
+          basn 37, 0.5
+          basn 35, 0.5
+          
+          basn 29+5, 0.75
+          basn 34-7, 0.75
+          basn 36-7, 1
+          basn 39-7, 1
+          basn 37, 0.5
+          
+          basn 29+5, 0.75
+          basn 34+5, 0.75
+          basn 36+5, 1
+          basn 41-7, 0.5
+          basn 39-7, 0.5
+          basn 34-7, 0.5
+        end
+      end
+    end
+  end
+end
+#######################################
+#DRUMS
+#######################################
+
+with_fx :level, amp: get(:amp_hihat) do
+  live_loop :h, sync: :met1 do
+    
+    24.times do
+      sample hh, amp: 0.1
+      sleep 1
+    end
+    sleep 2
+    sample hh, amp: 0.4
+    sleep 16
+  end
+end
+
+with_fx :level, amp: get(:amp_perc) do
+  live_loop :hi, sync: :met1 do
+    
+    sample perc, amp: 0.4
+    sleep 8
+  end
+end
+
+with_fx :level, amp: get(:amp_kick2) do
+  live_loop :k2, sync: :met1 do
+    
+    with_fx :lpf, cutoff: rrand(40,60) do
+      15.times do
+        sample kick, amp: 0.2
+        sleep 2
+        sample kick, amp: 0.5
+        sleep 2
+      end
+      8
+      7.times do
+        sample kick, amp: 0.4
+        sleep 1
+        sample kick, amp: 0.4
+        sleep 1
+      end
+      sleep 8
+    end
+  end
+end
+
+with_fx :level, amp: get(:amp_kick) do
+  live_loop :kick, sync: :met1 do
+    
+    with_fx :lpf, cutoff: rrand(40,60) do
+      15.times do
+        sample kick, amp: 0.5, rate: 2.5
+        sleep 3
+        sample kick, amp: 0.6, rate: 2.1
+        sleep 6
+      end
+      sleep 8
+      7.times do
+        sample kick, amp: 0.5, rate: 2.5
+        sleep 3
+        sample kick, amp: 0.6, rate: 2.5
+        sleep 5
+      end
+      sleep 8
+    end
+  end
+  sleep 16
+end
+
+with_fx :level, amp: get(:amp_snare) do
+  
+  with_fx :reverb do
+    live_loop :snare, sync: :met1 do
+      with_fx :compressor do
+        with_fx :hpf, cutoff: rrand(60,120) do
+          15.times do
+            sample snare, amp: 0.8
+            sleep 4
+            sample snare, amp: 0.8
+            sleep 4
+          end
+          sleep 8
+          7.times do
+            sample snare, amp: 0.8
+            sleep 2
+            sample snare, amp: 0.8
+            sleep 2
+          end
+          sleep 8
+        end
+      end
+    end
+  end
+end
+
+
+voc = "/home/student/Documents/Samples/meinesamples/ki_4877_mastered.mp3"
+
+track = "/home/student/Documents/Samples/meinesamples/The Love You're Given.mp3"
+set_mixer_control! lpf: 5000, lpf_slide: 16
+
+
+live_loop :master_clock do
+  sleep 1
+end
+
+with_fx :reverb, room: 1 do
+  with_fx :bitcrusher, sample_rate: 3000 do
+    with_fx :lpf, cutoff: 60 do
+      live_loop :biggi do
+        stop
+        sample track, rate: 1.125
+        sleep 4200
+      end
+    end
+  end
+end
+
+with_fx :reverb, room: 1 do
+  with_fx :bitcrusher, sample_rate: 9000 do
+    with_fx :lpf, cutoff: 60 do
+      live_loop :diddi do
+        #stop
+        sample voc, rate: 0.9
+        sleep 4200
+      end
+    end
+  end
+end
+
+
+set_mixer_control! lpf: 32, lpf_slide: 16
+piano = "/home/student/Documents/Samples/meinesamples/chill-lo-fi-rhodes-piano-melody_90bpm_A_minor.wav"
+rain = "/home/student/Documents/Samples/meinesamples/rain.mp3"
+flute = "/home/student/Documents/Samples/meinesamples/mystical-flute-full-loop_89bpm_C#_minor.wav"
+loop_85 = "/home/student/Documents/Samples/meinesamples/hip-hop-lo-fi-drums-tinny-lo-fi_85bpm.wav"
+loop_89 = "/home/student/Documents/Samples/meinesamples/lo-fi-type-boom-bap-drums-lo-fi-madness_89bpm.wav"
+intro = "/home/student/Documents/Samples/meinesamples/guitar.wav"
+
+
+set :amp_intro, 0.5
+set :amp_rain, 0
+
+
+#85
+set :amp_drums, 0
+set :amp_pmelo, 0
+
+#89
+set :amp_drums2, 0
+set :amp_fmelo, 0
+
+
+
+#use_bpm 89
+use_bpm 85
+
+live_loop :met1 do
+  sleep 1
+end
+
+with_fx :level, amp: get(:amp_drums) do
+  with_fx :reverb, room: 0.9, mix: 0.6 do
+    with_fx :lpf, cutoff: rrand(60,120) do
+      live_loop :drums, sync: :met1  do
+        #stop
+        sample loop_85, amp: 2, beat_stretch: 32
+        sleep 32
+      end
+    end
+  end
+end
+
+
+with_fx :level, amp: get(:amp_drums2) do
+  with_fx :reverb, room: 0.9, mix: 0.6 do
+    with_fx :lpf, cutoff: rrand(60,120) do
+      live_loop :drums2, sync: :met1  do
+        
+        sample loop_89, amp: 1, beat_stretch: 16
+        sleep 16
+      end
+    end
+  end
+end
+
+with_fx :level, amp: get(:amp_fmelo) do
+  with_fx :ping_pong do
+    with_fx :wobble do
+      live_loop :fmelo, sync: :met1  do
+        
+        #slices = 4
+        #slice = rand_i(slices)
+        sample flute, amp: 0.2, rate: rrand(-1,1)
+        #start: slice.to_f/slices,
+        #finish: (slice+1).to_f/slices
+        sleep 16  #rrand(6,8)
+      end
+    end
+  end
+end
+
+with_fx :level, amp: get(:amp_pmelo) do
+  with_fx :reverb, room: 0.9, mix: 0.6 do
+    #with_fx :slicer do
+    with_fx :flanger do
+      live_loop :pmelo, sync: :met1  do
+        
+        #slices = 4
+        #slice = rand_i(slices)
+        sample piano, beat_stretch: 32, amp: 0.4, rate: 90/85
+        #start: slice.to_f/slices,
+        #finish: (slice+1).to_f/slices
+        sleep 32  #rrand(6,8)
+      end
+    end
+  end
+end
+#end
+
+with_fx :level, amp: get(:amp_intro) do
+  in_thread :intro, sync: :rain do
+    with_fx :reverb, room: 0.9, mix: 0.2 do
+      #stop
+      sample intro, beat_stretch: 176, rate: 1
+      sleep 4200
+    end
+  end
+end
+
+
+with_fx :level, amp: get(:amp_rain) do
+  with_fx :bitcrusher, sample_rate: 5000 do
+    in_thread :rain, sync: :met1 do
+      with_fx :reverb, room: 0.9, mix: 0.2 do
+        #stop
+        sample rain, beat_stretch: 128, rate: 1, amp: 0.1
+        sleep 4200
+      end
+    end
+  end
+end
+
+
+use_bpm 140
+set_mixer_control! lpf: 3000, lpf_slide: 16
+kick_sample = "/home/student/Documents/Samples/Beats/house/drum/deepbd1.wav"
+
+
+snare_sample = "/home/student/Documents/Samples/x.shulz lofi kit/snares/snare22.wav"
+
+#"/home/student/Documents/Samples/Synth/Yamaha DX-7/chords/percsyn1c.wav"
+hat_sample = "/home/student/Documents/Samples/x.shulz lofi kit/hats/hihat15.wav"
+
+
+chord_chain = {}
+last_chords = [[:a3, "m11"], [:f3, "m11"]]
+chord_pool = [
+  [:a3, "m11"],
+  [:d3, "m11"],
+  [:e3, "m11"],
+  [:g3, "m11"]
+]
+
+# Control variables
+drum_on = 1
+
+
+live_loop :master_clock do
+  sleep 1
+end
+
+
+
+with_fx :level, amp: 0.128 do
+  with_fx :reverb do
+    with_fx :compressor, relax_time: 2 do
+      live_loop :kicks, sync: :master_clock do
+        stop
+        if drum_on == 1
+          sample kick_sample, amp: 0.8, rate: 1
+          sleep 2
+          sample kick_sample, amp: 0.6, rate: 1
+          sleep 2
+          sleep 2
+          sample kick_sample, amp: 0.7, rate: 1
+          sleep 2
+        else
+          sleep 8
+        end
+      end
+    end
+  end
+end
+
+with_fx :distortion do
+  with_fx :level, amp: 0.5 do
+    
+    live_loop :snares, sync: :master_clock do
+      stop
+      if drum_on == 1
+        sleep 4
+        sample snare_sample, amp: 2, relax_time: 2
+        sleep 4
+      else
+        sleep 4
+      end
+    end
+  end
+end
+
+
+#with_fx :hpf, cutoff: 85 do
+live_loop :hats, sync: :master_clock do
+  stop
+  if drum_on == 1
+    8.times do
+      if one_in(3)
+        sample hat_sample, amp: 1#, rate: rrand(0.8, 1.2)
+      end
+      sleep 0.5
+    end
+  else
+    sleep 4
+  end
+end
+#end
+
+
+
+#with_fx :pitch_shift, pitch: rrand(-1.9,3.9), reps: rrand(0,4) do
+live_loop :evolving_chords, sync: :master_clock do
+  stop
+  with_fx :slicer, phase: 1, wave: 0, invert_wave: 1, mix: 0.9 do
+    with_fx :echo, amp: 1.125 do
+      use_synth :tri
+      
+      
+      next_chord = chord_chain[last_chords] || chord_pool.choose
+      
+      
+      play chord(next_chord[0], next_chord[1]),
+        release: rrand(2, 4),
+        amp: 0.25,
+        cutoff: rrand(60, 120)
+      
+      
+      chord_chain[last_chords] = chord_pool.choose
+      
+      
+      last_chords = [last_chords[1], next_chord]
+      
+      sleep [0.5,1,2,4,8].choose
+    end
+  end
+end
+#end
